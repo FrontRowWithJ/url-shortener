@@ -12,7 +12,10 @@ import { sha256 } from "crypto-hash";
 const handlePUT: MethodHandler = async ({ body: timetableBase64 }) => {
   const client = await new MongoClient(process.env.MONGODB_URI!);
   const collection = client.db(DB_NAME).collection(COLLECTION_NAME);
-  const timetableHash = (await sha256(timetableBase64!)).substring(0, 10);
+  const timetableHash = (await sha256(timetableBase64!))
+    .split("")
+    .filter((_, i) => i % 4 === 0)
+    .join("");
   await collection.updateOne(URL_SHORTENER_QUERY, {
     $set: { [timetableHash]: timetableBase64 },
   });
