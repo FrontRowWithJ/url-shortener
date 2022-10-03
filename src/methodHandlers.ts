@@ -77,9 +77,10 @@ const handleGET: MethodHandler = async ({ queryStringParameters }) => {
   const client = await new MongoClient(process.env.MONGODB_URI!);
   const database = client.db(DB_NAME);
   const collection = database.collection<URLShortenerDocument>(COLLECTION_NAME);
-  const timetableBase64s = await collection.distinct(timetableHash, {
-    [timetableHash]: { $exists: true },
-  });
+  const timetableBase64s = await collection.distinct(
+    timetableHash,
+    URL_SHORTENER_QUERY
+  );
   if (timetableBase64s.length === 0) {
     return {
       statusCode: 400,
