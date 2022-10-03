@@ -15,6 +15,7 @@ const hashTimetable = (timetable: string) => {
     .filter((_, i) => i % 4 === 0)
     .join("")
     .substring(0, HASH_LENGTH);
+    
 };
 
 const handlePUT: MethodHandler = async ({ body: timetableBase64 }) => {
