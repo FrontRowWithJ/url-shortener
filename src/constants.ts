@@ -12,4 +12,4 @@ export const COLLECTION_NAME = "short_url_collection";
 export const DB_NAME = "short_url_db";
 const SHORTENER_ID = "633a34f94f1b9aaf579f3df2";
 export const URL_SHORTENER_QUERY = { _id: SHORTENER_ID } as const;
-export const HASH_LENGTH = 16;
+export const HASH_LENGTH = 8;
