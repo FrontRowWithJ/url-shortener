@@ -1,7 +1,5 @@
-// const origin = "https://frontrowwithj.github.io"
-const origin = "*";
 export const PREFLIGHT_HEADERS = {
-  "Access-Control-Allow-Origin": origin,
+  "Access-Control-Allow-Origin": "https://frontrowwithj.github.io",
   "Access-Control-Allow-Methods": "PUT, GET",
 } as const;
 

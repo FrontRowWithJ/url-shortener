@@ -29,6 +29,12 @@ const handlePUT: MethodHandler = async ({ body: timetableBase64 }) => {
 };
 
 const handleGET: MethodHandler = async ({ body: timetableHash }) => {
+  return {
+    statusCode: 200,
+    body: "Hello World",
+    isBase64Encoded: false,
+    headers: CORS_HEADERS,
+  };
   const client = await new MongoClient(process.env.MONGODB_URI!);
   const database = client.db(DB_NAME);
   const collection = database.collection<URLShortenerDocument>(COLLECTION_NAME);
