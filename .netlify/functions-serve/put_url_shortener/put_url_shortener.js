@@ -1,0 +1,1 @@
+module.exports = require('./src/netlify/put_url_shortener.js')

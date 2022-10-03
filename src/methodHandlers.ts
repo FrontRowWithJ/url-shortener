@@ -5,17 +5,22 @@ import {
   URL_SHORTENER_QUERY,
   CORS_HEADERS,
   PREFLIGHT_HEADERS,
+  HASH_LENGTH,
 } from "./constants";
 import { MethodHandler, methods, URLShortenerDocument } from "./types";
-import { sha256 } from "crypto-hash";
+
+const hashTimetable = (timetable: string) => {
+  return timetable
+    .split("")
+    .filter((_, i) => i % 4 === 0)
+    .join("")
+    .substring(0, HASH_LENGTH);
+};
 
 const handlePUT: MethodHandler = async ({ body: timetableBase64 }) => {
   const client = await new MongoClient(process.env.MONGODB_URI!);
   const collection = client.db(DB_NAME).collection(COLLECTION_NAME);
-  const timetableHash = (await sha256(timetableBase64!))
-    .split("")
-    .filter((_, i) => i % 4 === 0)
-    .join("");
+  const timetableHash = await hashTimetable(timetableBase64!);
   await collection.updateOne(URL_SHORTENER_QUERY, {
     $set: { [timetableHash]: timetableBase64 },
   });
@@ -29,17 +34,18 @@ const handlePUT: MethodHandler = async ({ body: timetableBase64 }) => {
 };
 
 const handleGET: MethodHandler = async ({ body: timetableHash }) => {
-  return {
-    statusCode: 200,
-    body: "Hello World",
-    isBase64Encoded: false,
-    headers: CORS_HEADERS,
-  };
   const client = await new MongoClient(process.env.MONGODB_URI!);
   const database = client.db(DB_NAME);
   const collection = database.collection<URLShortenerDocument>(COLLECTION_NAME);
-  const timetableBase64s = await collection.distinct(timetableHash!, {
-    [timetableHash!]: { $exists: true },
+  if (!timetableHash)
+    return {
+      statusCode: 400,
+      body: "No body(URL) Present",
+      headers: CORS_HEADERS,
+      isBase64Encoded: false,
+    };
+  const timetableBase64s = await collection.distinct(timetableHash, {
+    [timetableHash]: { $exists: true },
   });
   if (timetableBase64s.length === 0) {
     return {

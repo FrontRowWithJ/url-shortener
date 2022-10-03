@@ -1,6 +1,6 @@
+import { handlers, handleMethodNotAllowed } from "../src/methodHandlers";
 import { type Handler } from "@netlify/functions";
-import { handleMethodNotAllowed, handlers } from "../src/methodHandlers";
-import { methods } from "../src/types";
+import { type methods } from "../src/types";
 
 export const handler: Handler = async (evt) => {
   const httpMethod = evt.httpMethod as methods;
