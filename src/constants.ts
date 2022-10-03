@@ -5,7 +5,7 @@ export const PREFLIGHT_HEADERS = {
 
 export const CORS_HEADERS = {
   "Content-Type": "text/plain",
-  "Access-Control-Allow-Origin": origin,
+  "Access-Control-Allow-Origin": "https://frontrowwithj.github.io",
 } as const;
 
 export const COLLECTION_NAME = "short_url_collection";
